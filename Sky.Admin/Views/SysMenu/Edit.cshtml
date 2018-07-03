@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "Edit";
+}
+
+<form class="layui-form">
+    <div class="layui-form-item">
+        <label class="layui-form-label">名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" required="" lay-vertype="tips" lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item" style="text-align: center;">
+        <button class="layui-btn" lay-submit="" lay-filter="save" url="/fsbus/1001">保存</button>
+    </div>
+</form>
