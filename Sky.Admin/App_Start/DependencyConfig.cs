@@ -25,8 +25,11 @@ namespace Sky.Admin.App_Start
             //2：注册所有继承Dependency的接口
             var baseType = typeof(IDependency);
             builder.RegisterAssemblyTypes(assemblyList)
-              .Where(f => baseType.IsAssignableFrom(f) && f != baseType)
-              .AsImplementedInterfaces().InstancePerLifetimeScope();
+              .Where(f => baseType.IsAssignableFrom(f) && f != baseType)//过滤继承IDependency的
+              //.AsSelf() //自身服务，用于没有接口的类
+              .AsImplementedInterfaces()//接口服务
+              .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)  //属性注入
+              .InstancePerLifetimeScope();//生命周期
 
             //生成具体的实例
             var container = builder.Build();
