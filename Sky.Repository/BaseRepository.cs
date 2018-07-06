@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -17,7 +18,7 @@ namespace Sky.Repository
         #region 数据库上下文
         private DbContext BaseDBContext;
         private DbSet<T> BaseTable;
-        private IUnitOfWork _unitOfWork;
+
         public BaseRepository(IDbContextFactory dbContextFactory)
         {
             BaseDBContext = dbContextFactory.GetCurrentThreadInstance();
@@ -28,11 +29,7 @@ namespace Sky.Repository
         /// Unit of Work
         /// 工作单元
         /// </summary>
-        public IUnitOfWork UnitOfWork
-        {
-            get { return _unitOfWork; }
-            set { _unitOfWork = value; }
-        }
+        public IUnitOfWork UnitOfWork { get; set; }
         #endregion
 
 
@@ -328,7 +325,23 @@ namespace Sky.Repository
         /// <returns></returns>
         public bool SavaChange()
         {
-            return BaseDBContext.SaveChanges() > 0;
+            try
+            {
+                BaseDBContext.SaveChanges();
+                return true;
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var error in from item in ex.EntityValidationErrors from item2 in item.ValidationErrors select $"{item2.PropertyName}:{item2.ErrorMessage}\r\n")
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return false;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Sky.Data.Interface
     /// <summary>
     /// 工作单元
     /// </summary>
-    public interface IUnitOfWork : IDependency, IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         #region 属性
 
